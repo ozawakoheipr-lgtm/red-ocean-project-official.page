@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RED Ocean Project</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Helvetica Neue', Arial, sans-serif;
+  color:#333;
+  /* カリブの夕焼け風グラデーション */
+  background:linear-gradient(135deg,#00c4cc,#7b2ff7,#ff4ecd);
+  background-size:300% 300%;
+  animation:bgMove 18s ease infinite;
+  overflow-x:hidden;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ===== HEADER ===== */
+header{
+  position:fixed;
+  width:100%;
+  padding:20px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  z-index:100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.logo-area img{
+  height:60px; /* PCでの表示サイズを少し調整 */
+  width: auto;
+}
+
+.logo-text{
+  font-size:18px;
+  letter-spacing:1px;
+  font-weight:700;
+}
+
+nav a{
+  margin-left:20px;
+  text-decoration:none;
+  color:#333;
+  font-size:13px;
+  font-weight: 600;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:#7b2ff7;
+}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:120px 8% 60px 8%;
+}
+
+.hero-image{
+  width:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.circle-mask{
+  width:500px;
+  height:500px;
+  max-width: 90%;
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+  border:4px solid #ffe600;
+  box-shadow:0 0 20px #ffe600,0 40px 80px rgba(0,0,0,0.3);
+}
+
+.circle-mask img{
+  position:absolute;
+  width: 100%;
+  height:auto;
+  left:50%;
+  transform:translateX(-50%);
+  bottom: 0;
+}
+
+.hero-text{
+  width:45%;
+}
+
+.hero-text h1{
+  font-size:clamp(2.5rem, 5vw, 5rem); /* 画面サイズに合わせて自動縮小 */
+  line-height:1.2;
+  background:linear-gradient(90deg,#00c4cc,#7b2ff7);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  position:relative;
+  display:inline-block;
+  padding:25px 35px;
+}
+
+.hero-text h1::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(12px);
+  border-radius:25px;
+  z-index:-1;
+  box-shadow:0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* ===== SECTIONS COMMON ===== */
+.content, .section {
+  padding: 100px 8%;
+}
+
+/* ===== ABOUT ===== */
+.about-section{
+  padding:120px 8%;
+  background:white;
+  text-align:center;
+}
+
+.about-logo{
+  width:320px;
+  max-width:80%;
+  margin-bottom:40px;
+}
+
+.about-text{
+  max-width:800px;
+  margin:0 auto;
+  font-size:16px;
+  line-height:2;
+  color:#555;
+}
+
+/* ===== TOPICS SLIDER ===== */
+.content{
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(15px);
+  position:relative;
+}
+
+.section-title{
+  font-size:32px;
+  margin-bottom:50px;
+  color:#7b2ff7;
+  font-weight: 800;
+}
+
+.topics-wrapper{
+  position:relative;
+}
+
+.topics-container{
+  display:flex;
+  gap:25px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding: 20px 5px;
+  -webkit-overflow-scrolling: touch; /* スマホでのスクロールを滑らかに */
+}
+
+.topics-container::-webkit-scrollbar{
+  display:none;
+}
+
+.topic-card{
+  min-width:300px;
+  flex:0 0 auto;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  text-decoration:none;
+  color:#333;
+  transition:0.3s;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.topic-card:hover{
+  transform:translateY(-5px);
+}
+
+.topic-thumb img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.topic-info{
+  padding:20px;
+}
+
+.topic-date{
+  font-size:12px;
+  color:#7b2ff7;
+  font-weight:bold;
+}
+
+/* スライダーボタン（スマホでは隠すのが一般的） */
+.slider-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:white;
+  border:none;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  z-index:5;
+}
+.slider-prev{ left:-20px; }
+.slider-next{ right:-20px; }
+
+/* ===== TALENTS ===== */
+.section{
+  background:white;
+}
+
+.talent-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.talent-card{
+  background:#f8f8f8;
+  border-radius:20px;
+  overflow:hidden;
+  transition:0.3s;
+  text-align:center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.talent-card img{
+  width:100%;
+  height:350px;
+  object-fit:cover;
+}
+
+.talent-info{
+  padding:20px;
+}
+
+/* ===== NEWS ===== */
+.news-item{
+  display: block;
+  padding:20px 0;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.news-item span{
+  color:#7b2ff7;
+  margin-right:15px;
+  font-weight:bold;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:40px;
+  text-align:center;
+  font-size:12px;
+  background:#f5f5f5;
+  color: #999;
+}
+
+/* =============================================
+   ===== RESPONSIVE (スマホ・タブレット対応) =====
+   ============================================= */
+
+@media screen and (max-width: 1024px) {
+  .hero-text h1 { font-size: 3.5rem; }
+  .circle-mask { width: 400px; height: 400px; }
+}
+
+@media screen and (max-width: 768px) {
+  /* ヘッダーの調整 */
+  header {
+    padding: 15px 5%;
+    flex-direction: column; /* ロゴとナビを上下に */
+    gap: 10px;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* メニューが多い場合に折り返す */
+    gap: 10px;
+  }
+  nav a {
+    margin-left: 0;
+    font-size: 11px;
+    padding: 5px;
+  }
+  .logo-area img { height: 40px; }
+
+  /* ヒーローエリアを縦並びに */
+  .hero {
+    flex-direction: column-reverse; /* キャラクターを下に、文字を上に */
+    justify-content: center;
+    padding-top: 160px;
+    text-align: center;
+  }
+  .hero-image, .hero-text {
+    width: 100%;
+  }
+  .hero-text {
+    padding-bottom: 40px;
+  }
+  .hero-text h1 {
+    font-size: 2.2rem;
+    padding: 15px 25px;
+  }
+  .circle-mask {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* セクションの余白調整 */
+  .content, .section, .about-section {
+    padding: 60px 5%;
+  }
+
+  /* タレント一覧を2列に */
+  .talent-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  /* スライダーボタンをスマホでは隠す（指でスワイプできるため） */
+  .slider-btn {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .talent-grid {
+    grid-template-columns: 1fr; /* スマホ小画面では1列 */
+  }
+  .about-text {
+    font-size: 14px;
+    text-align: left; /* 長い文章は左寄せが見やすい */
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-area">
+    <img src="logo.png" alt="RED Ocean Project ロゴ">
+    <div class="logo-text">RED Ocean Project</div>
+  </div>
+  <nav>
+    <a href="#">TOP</a>
+    <a href="#">TALENTS</a>
+    <a href="#">GUIDELINE</a>
+    <a href="#">AUDITION</a>
+    <a href="#">NEWS</a>
+    <a href="#">CONTACT</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-image">
+    <div class="circle-mask">
+      <img src="talent.png" alt="Main Talent">
+    </div>
+  </div>
+  <div class="hero-text">
+    <h1>情熱で、<br>世界を灯せ。</h1>
+  </div>
+</section>
+
+<section class="about-section">
+  <img src="logo.png" class="about-logo" alt="Logo large">
+  <div class="about-text">
+    レップロ（RED Ocean Project）は、2023年2月1日に設立された<br>
+    「情熱で、 世界を灯せ。」をモットーとしたVTuber事務所です。<br>
+    「飽和した市場」という意味もある『RED Ocean』という言葉ですが、<br>
+    「太陽のようにまぶしいタレントたちの笑顔で、世界を明るく照らしたい！」<br>
+     という想いが込められています。
+  </div>
+</section>
+
+<section class="content">
+  <h2 class="section-title">TOPICS</h2>
+
+  <div class="topics-wrapper">
+    <button class="slider-btn slider-prev">&#10094;</button>
+    <button class="slider-btn slider-next">&#10095;</button>
+
+    <div class="topics-container" id="topicsSlider">
+
+      <a href="topics/aoumi.live.html" class="topic-card">
+        <div class="topic-thumb">
+          <img src="live_info.png" alt="碧海みなと1stライブ">
+        </div>
+        <div class="topic-info">
+          <span class="topic-date">2026.03.03</span>
+          <p class="topic-title">「碧海みなと」1stソロLive「海底のうたかた・夢の調べ」開催決定！</p>
+        </div>
+      </a>
+
+      <a href="topics/topics.egi.index.html" class="topic-card">
+        <div class="topic-thumb"><img src="figure.png" alt="Figure"></div>
+        <div class="topic-info">
+          <span class="topic-date">2026.03.02</span>
+          <p class="topic-title">「餌木あかり」のプライズが初登場！全国のGiQOクレーンゲームに登場！</p>
+        </div>
+      </a>
+
+      <a href="#" class="topic-card">
+        <div class="topic-thumb"><img src="info_inkai.png" alt="Info"></div>
+        <div class="topic-info">
+          <span class="topic-date">2026.02.27</span>
+          <p class="topic-title">弊社ライバーに対する誹謗中傷に関するお知らせ</p>
+        </div>
+      </a>
+
+      <a href="#" class="topic-card">
+        <div class="topic-thumb"><img src="sotsugyo.png" alt="Notice"></div>
+        <div class="topic-info">
+          <span class="topic-date">2026.02.26</span>
+          <p class="topic-title">弊社所属ライバ―卒業について</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="view-more-area">
+    <a href="#" class="view-more-btn">View More ▶</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">TALENTS</div>
+  <div class="talent-grid">
+
+    <a href="talents/minato_index.html" class="talent-card">
+      <img src="nagisa.png" alt="碧海みなと">
+      <div class="talent-info"><h3>碧海みなと</h3></div>
+    </a>
+
+    <a href="talents/egi_index.html" class="talent-card">
+      <img src="egi.png" alt="餌木あかり">
+      <div class="talent-info"><h3>餌木あかり</h3></div>
+    </a>
+
+    <a href="talents/orca_index.html" class="talent-card">
+      <img src="orca.png" alt="社地オルカ">
+      <div class="talent-info"><h3>社地オルカ</h3></div>
+    </a>
+
+    <a href="talents/junjoji_index.html" class="talent-card">
+      <img src="junjoji.png" alt="純情寺あま">
+      <div class="talent-info"><h3>純情寺あま</h3></div>
+    </a>
+
+    <a href="talents/catherine_index.html" class="talent-card">
+      <img src="catherine.png" alt="キャシー・ウッド">
+      <div class="talent-info"><h3>キャシー・ウッド</h3></div>
+    </a>
+
+    <a href="talents/yuhigaoka_index.html" class="talent-card">
+      <img src="yuhigaoka.png" alt="夕日ヶ丘艦子">
+      <div class="talent-info"><h3>夕日ヶ丘艦子</h3></div>
+    </a>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">NEWS</div>
+  <a href="news/20260305.html" class="news-item">
+    <span>2026.03.05</span>小澤恒平の卒業について
+  </a>
+  <div class="news-item"><span>2026.03.03</span>「碧海みなと」1stソロLive開催決定！</div>
+  <div class="news-item"><span>2026.03.02</span>「餌木あかり」のプライズが初登場！</div>
+  <div class="news-item"><span>2026.03.01</span>新メンバーオーディション開催決定</div>
+</section>
+
+<footer>
+  © 2023 RED Ocean Project
+</footer>
+
+<script>
+const slider = document.getElementById('topicsSlider');
+document.querySelector('.slider-next').onclick = () => {
+  slider.scrollBy({ left: 350, behavior: 'smooth' });
+};
+document.querySelector('.slider-prev').onclick = () => {
+  slider.scrollBy({ left: -350, behavior: 'smooth' });
+};
+</script>
+
+</body>
+</html>
