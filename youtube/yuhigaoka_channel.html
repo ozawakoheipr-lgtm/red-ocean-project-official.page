@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon Live Production - YouTube Style</title>
+    <style>
+        /* 基本設定 */
+        body { margin: 0; font-family: "Roboto", Arial, sans-serif; background-color: #fff; display: flex; color: #0f0f0f; }
+
+        /* 左サイドバー */
+        .sidebar { width: 240px; height: 100vh; position: fixed; border-right: 1px solid #f2f2f2; font-size: 14px; overflow-y: auto; z-index: 20; background: #fff; }
+        
+        .sidebar-banner-area {
+            padding: 20px 12px 10px 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sidebar-banner-img {
+            display: block;
+            width: 80%;
+            max-height: 80px;
+            border-radius: 4px;
+            object-fit: contain;
+            background-color: transparent; 
+        }
+
+        .sidebar-menu { padding: 12px; }
+        .sidebar-item { padding: 10px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; white-space: nowrap; }
+        .sidebar-item:hover { background-color: #f2f2f2; }
+        .sidebar-item.active { background-color: #e5e5e5; font-weight: bold; }
+        .sidebar hr { border: 0; border-top: 1px solid #eee; margin: 12px 0; }
+
+        /* メインコンテンツ */
+        .main-wrapper { margin-left: 240px; width: calc(100% - 240px); flex: 1; }
+        
+        /* ヘッダー */
+        .header { height: 56px; padding: 0 16px; display: flex; align-items: center; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; }
+        .header-left { display: flex; align-items: center; gap: 15px; flex: 1; }
+        .header-center { flex: 2; display: flex; justify-content: center; }
+        .search-bar { width: 80%; max-width: 600px; height: 36px; border: 1px solid #ccc; border-radius: 20px; padding: 0 15px; outline: none; }
+        .header-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 15px; }
+        
+        .user-icon-small { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #eee; }
+
+        /* メインバナー */
+        .banner-container { width: 100%; max-width: 1284px; margin: 0 auto; padding: 0 16px; box-sizing: border-box; }
+        .banner-img { 
+            width: 100%; 
+            aspect-ratio: 6.2 / 1; 
+            margin-top: 15px; 
+            border-radius: 15px; 
+            object-fit: cover;
+            display: block;
+            background-color: #f0f0f0;
+        }
+
+        /* チャンネル情報 */
+        .channel-header { max-width: 1100px; margin: 20px auto; padding: 0 20px; display: flex; align-items: center; }
+        .main-icon { 
+            width: 120px; height: 120px; border-radius: 50%; margin-right: 20px; 
+            object-fit: cover; border: 1px solid #eee; flex-shrink: 0;
+            background-color: #eee;
+        }
+        .info h1 { font-size: 28px; margin: 0; font-weight: bold; }
+        .info p { color: #606060; margin: 5px 0; font-size: 14px; }
+        .btn-group { margin-top: 10px; display: flex; gap: 10px; }
+        .btn { padding: 10px 20px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .btn-black { background: #0f0f0f; color: white; }
+        .btn-gray { background: #f2f2f2; color: #0f0f0f; }
+
+        /* タブ */
+        .nav-tabs { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; border-bottom: 1px solid #eee; }
+        .tab { padding: 15px 20px; color: #606060; cursor: pointer; font-weight: bold; font-size: 15px; }
+        .tab.active { color: #0f0f0f; border-bottom: 3px solid #0f0f0f; }
+
+        /* コンテンツ切り替え用の設定 */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* セクション */
+        .section { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .section-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+
+        /* ビデオグリッド */
+        .video-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .video-card { cursor: pointer; }
+        .thumb-container { position: relative; width: 100%; aspect-ratio: 16/9; }
+        .thumb-img { 
+            width: 100%; height: 100%; border-radius: 12px; object-fit: cover; 
+            background-color: #eee;
+        }
+        .timestamp { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); color: white; padding: 2px 4px; border-radius: 4px; font-size: 11px; }
+        .video-meta { font-size: 13px; margin-top: 8px; font-weight: bold; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .video-details { font-size: 11px; color: #606060; margin-top: 4px; }
+
+        /* ショート動画用グリッド */
+        .shorts-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+        .shorts-card { cursor: pointer; }
+        .shorts-thumb { width: 100%; aspect-ratio: 9/16; border-radius: 12px; object-fit: cover; background-color: #eee; }
+
+        /* 注目動画・メンバー */
+        .member-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 60px;                
+            padding: 20px 0;
+            overflow-x: auto; 
+        }
+        .member-card { text-align: center; width: 100px; flex-shrink: 0; cursor: pointer; }
+        .member-img { 
+            width: 90px; height: 90px; border-radius: 50%; 
+            object-fit: cover; border: 1px solid #eee; margin-bottom: 8px;
+            background-color: #eee;
+            transition: transform 0.2s;
+        }
+        .member-img:hover { transform: scale(1.1); }
+        .member-name { font-size: 13px; font-weight: bold; color: #0f0f0f; }
+        .member-subs { font-size: 11px; color: #606060; margin-top: 2px; }
+
+        /* 投稿スタイル */
+        .post-card { background:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #eee; margin-bottom: 15px;}
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-banner-area">
+            <img src="youtube_logo.png" alt="サイドバーバナー" class="sidebar-banner-img">
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="sidebar-item active">🏠 ホーム</div>
+            <div class="sidebar-item">🩳 ショート</div>
+            <div class="sidebar-item">🔔 登録チャンネル</div>
+            <hr>
+            <div class="sidebar-item">👤 マイページ</div>
+            <div class="sidebar-item">🕒 履歴</div>
+            <div class="sidebar-item">🎬 作成した動画</div>
+            <div class="sidebar-item">👍 高く評価した動画</div>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left"></div>
+            <div class="header-center">
+                <input type="text" class="search-bar" placeholder="検索">
+            </div>
+            <div class="header-right">＋ 🔔 <img src="yuhigaoka.png" alt="user" class="user-icon-small"></div>
+        </div>
+
+        <div class="banner-container">
+            <img src="topview.jpg" alt="集合バナー" class="banner-img">
+        </div>
+
+        <div class="channel-header">
+            <img src="icon.jpg" alt="夕陽ヶ丘 艦子" class="main-icon">
+            <div class="info">
+                <h1>夕陽ヶ丘 艦子</h1>
+                <p>@Yuhigaoka_KankO ・ チャンネル登録者数 11.2万人 ・ 120本の動画</p>
+                <div class="btn-group">
+                    <button class="btn btn-black">チャンネル登録</button>
+                    <button class="btn btn-gray">メンバーになる</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <div class="tab active" onclick="switchTab(event, 'home')">ホーム</div>
+            <div class="tab" onclick="switchTab(event, 'videos')">動画</div>
+            <div class="tab" onclick="switchTab(event, 'shorts')">ショート</div>
+            <div class="tab" onclick="switchTab(event, 'live')">ライブ</div>
+            <div class="tab" onclick="switchTab(event, 'playlist')">再生リスト</div>
+            <div class="tab" onclick="switchTab(event, 'community')">投稿</div>
+        </div>
+
+        <div id="home" class="tab-content active">
+            <div class="section">
+                <div class="section-title">過去のライブ配信</div>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_1.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">2:15:30</span>
+                        </div>
+                        <div class="video-meta">【WoWS】提督、出撃です！一斉射撃で敵艦隊を殲滅せよ！</div>
+                        <div class="video-details">15万回視聴 ・ 3時間前</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_2.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">1:45:12</span>
+                        </div>
+                        <div class="video-meta">【実況】深海調査で見つけた伝説の沈没船</div>
+                        <div class="video-details">8.2万回視聴 ・ 昨日</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_5.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">3:20:00</span>
+                        </div>
+                        <div class="video-meta">【アズレン】新イベント完全攻略！海軍の意地を見せる</div>
+                        <div class="video-details">20万回視聴 ・ 2日前</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_3.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">1:10:45</span>
+                        </div>
+                        <div class="video-meta">【艦これ】提督の執務室から生配信！大型建造チャレンジ</div>
+                        <div class="video-details">5.4万回視聴 ・ 3日前</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_4.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">4:05:22</span>
+                        </div>
+                        <div class="video-meta">【耐久配信】全100隻の敵艦を撃沈するまで終わりません</div>
+                        <div class="video-details">32万回視聴 ・ 1週間前</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">注目のチャンネル</div>
+                <div class="member-row">
+                    <div class="member-card">
+                        <img src="egi.png" alt="餌木あかり" class="member-img" style="border: 2px solid #0f0f0f;">
+                        <div class="member-name">餌木あかり</div>
+                        <div class="member-subs">16.8万人 subs</div>
+                    </div>
+                    <div class="member-card">
+                        <img src="orca.png" alt="社地オルカ" class="member-img">
+                        <div class="member-name">社地オルカ</div>
+                        <div class="member-subs">45.0万人 subs</div>
+                    </div> 
+                    <div class="member-card">
+                        <img src="nagisa.png" alt="碧海みなと" class="member-img">
+                        <div class="member-name">碧海みなと</div>
+                        <div class="member-subs">27.4万人 subs</div>
+                    </div>
+                    <div class="member-card">
+                        <img src="catherine.png" alt="Catherine Wood" class="member-img">
+                        <div class="member-name">Catherine Wood</div>
+                        <div class="member-subs">13.0万人 subs</div>
+                    </div>
+                    <div class="member-card">
+                        <img src="junjoji.png" alt="純情寺あま" class="member-img">
+                        <div class="member-name">純情寺あま</div>
+                        <div class="member-subs">30.1万人</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="videos" class="tab-content">
+            <div class="section">
+                <div class="section-title">アップロード動画</div>
+                <p style="color: #606060;">（最新の投稿順にすべての動画が表示されます）</p>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="thumb-container"><img src="samune_1.jpg" class="thumb-img"></div>
+                        <div class="video-meta">【WoWS】提督、出撃です！</div>
+                        <div class="video-details">15万回視聴</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="shorts" class="tab-content">
+            <div class="section">
+                <div class="section-title">Shorts</div>
+                <div class="shorts-grid">
+                    <div class="shorts-card">
+                        <img src="short_1.jpg" class="shorts-thumb">
+                        <div class="video-meta">今日の朝練敬礼！</div>
+                        <div class="video-details">1.2万回視聴</div>
+                    </div>
+                    <div class="shorts-card">
+                        <img src="short_2.jpg" class="shorts-thumb">
+                        <div class="video-meta">激辛海軍カレー食べてみた</div>
+                        <div class="video-details">5,000回視聴</div>
+                    </div>
+                    <div class="shorts-card">
+                        <img src="short_3.jpg" class="shorts-thumb">
+                        <div class="video-meta">10秒でわかる主砲の掃除方法</div>
+                        <div class="video-details">8,900回視聴</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="live" class="tab-content">
+            <div class="section">
+                <div class="section-title">過去のライブ配信</div>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_1.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">2:15:30</span>
+                        </div>
+                        <div class="video-meta">【WoWS】提督、出撃です！一斉射撃で敵艦隊を殲滅せよ！</div>
+                        <div class="video-details">15万回視聴 ・ 3時間前</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="samune_2.jpg" alt="thumbnail" class="thumb-img">
+                            <span class="timestamp">1:45:12</span>
+                        </div>
+                        <div class="video-meta">【実況】深海調査で見つけた伝説の沈没船</div>
+                        <div class="video-details">8.2万回視聴 ・ 昨日</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="playlist" class="tab-content">
+            <div class="section">
+                <div class="section-title">作成した再生リスト</div>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="playlist_1.jpg" class="thumb-img" style="border-right: 20px solid rgba(0,0,0,0.5);">
+                        </div>
+                        <div class="video-meta">海軍演習シリーズ (全20本)</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container">
+                            <img src="playlist_2.jpg" class="thumb-img" style="border-right: 20px solid rgba(0,0,0,0.5);">
+                        </div>
+                        <div class="video-meta">歌ってみた航海記</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="community" class="tab-content">
+            <div class="section">
+                <div class="section-title">コミュニティ投稿</div>
+                <div class="post-card">
+                    <p><strong>夕陽ヶ丘 艦子</strong> <span style="font-size:12px; color:#606060;">12時間前</span></p>
+                    <p>提督の諸君！今日の夜は大型建造チャレンジだ！資材の準備はいいか？<br>21:00から作戦開始する！遅れるなよ！⚓</p>
+                </div>
+                <div class="post-card">
+                    <p><strong>夕陽ヶ丘 艦子</strong> <span style="font-size:12px; color:#606060;">3日前</span></p>
+                    <p>昨日の深海調査配信、みんなありがとう！あの沈没船、一体何だったんだろうな…また調査しに行くぞ！</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(event, tabId) {
+            // 全コンテンツを非表示にする
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // 全タブのアクティブ状態を解除
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // クリックされたIDのコンテンツを表示
+            document.getElementById(tabId).classList.add('active');
+            
+            // クリックされたタブをアクティブにする
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
