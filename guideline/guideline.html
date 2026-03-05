@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUIDELINE | RED Ocean Project</title>
+
+<style>
+/* 共通設定 */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Helvetica Neue', Arial, sans-serif;
+  color:#333;
+  background:linear-gradient(135deg,#00c4cc,#7b2ff7,#ff4ecd);
+  background-size:300% 300%;
+  animation:bgMove 18s ease infinite;
+  overflow-x:hidden;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ===== HEADER ===== */
+header{
+  position:fixed;
+  width:100%;
+  padding:20px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  z-index:100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo-area img{ height:50px; width: auto; vertical-align: middle; }
+.logo-text{ display: inline-block; font-size:18px; font-weight:700; margin-left:10px; }
+.logo-link{ text-decoration:none; color:inherit; }
+
+/* ===== CONTENT ===== */
+.container {
+  padding: 140px 8% 80px;
+  min-height: 100vh;
+}
+
+.section-title {
+  font-size: 36px;
+  color: white;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 50px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* ===== GUIDELINE BOX (ここをカードから変更) ===== */
+.guideline-box {
+  background: white;
+  border-radius: 30px;
+  padding: 60px 8%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  line-height: 1.8;
+}
+
+.guideline-content h2 {
+  font-size: 24px;
+  color: #7b2ff7;
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.guideline-content h2:first-child {
+  margin-top: 0;
+}
+
+.guideline-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #555;
+}
+
+.guideline-content ul {
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+.guideline-content li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* ===== BACK LINK ===== */
+.back-home {
+  display: block;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.back-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 2px solid white;
+  padding-bottom: 5px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:40px;
+  text-align:center;
+  font-size:12px;
+  background:#f5f5f5;
+  color: #999;
+}
+
+@media screen and (max-width: 600px) {
+  .guideline-box { padding: 40px 5%; }
+  .section-title { font-size: 28px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-area">
+    <a href="../index.html" class="logo-link">
+      <img src="../logo.png" alt="RED Ocean Project ロゴ">
+      <div class="logo-text">RED Ocean Project</div>
+    </a>
+  </div>
+</header>
+
+<div class="container">
+  <h1 class="section-title">GUIDELINE</h1>
+
+  <div class="guideline-box">
+    <div class="guideline-content">
+      <h2>はじめに</h2>
+      <p>RED Ocean Project（以下「当事務所」）は、所属タレントを応援してくださるファンの皆様の創作活動を心より歓迎いたします。皆様に安心して楽しんでいただくため、以下の二次創作ガイドラインを策定しております。</p>
+
+      <h2>二次創作について</h2>
+      <p>以下の条件を守っていただける限り、当事務所所属タレントのイラスト、漫画、動画、グッズ作成などの二次創作活動を自由に行っていただけます。</p>
+      <ul>
+        <li>タレントのイメージを著しく損なう活動をしないこと</li>
+        <li>公序良俗に反する内容、または他者を不快にする内容を含まないこと</li>
+        <li>公式と誤認されるような表現を避けること</li>
+        <li>営利目的（商用利用）については、個人・同人活動の範囲を超えないこと</li>
+      </ul>
+
+      <h2>ファンアートハッシュタグ</h2>
+      <p>作成いただいたイラストなどは、各タレントが定めるハッシュタグを付けて投稿していただければ幸いです。投稿された作品は、配信内で紹介させていただく場合がございます。</p>
+
+      <h2>切り抜き動画について</h2>
+      <p>YouTube等への切り抜き動画の投稿は、各動画の概要欄に必ず「元動画のURL」と「タレントのチャンネルリンク」を記載してください。また、ライブ配信中の同時投稿は避け、アーカイブ公開後に投稿をお願いいたします。</p>
+    </div>
+  </div>
+
+  <div class="back-home">
+    <a href="../index.html" class="back-link">TOPページへ戻る</a>
+  </div>
+</div>
+
+<footer>
+  © 2023 RED Ocean Project
+</footer>
+
+</body>
+</html>
