@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONTACT | RED Ocean Project</title>
+
+<style>
+/* 共通設定 */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Helvetica Neue', Arial, sans-serif;
+  color:#333;
+  background:linear-gradient(135deg,#00c4cc,#7b2ff7,#ff4ecd);
+  background-size:300% 300%;
+  animation:bgMove 18s ease infinite;
+  overflow-x:hidden;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ===== HEADER ===== */
+header{
+  position:fixed;
+  width:100%;
+  padding:20px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  z-index:100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo-area img{ height:50px; width: auto; vertical-align: middle; }
+.logo-text{ display: inline-block; font-size:18px; font-weight:700; margin-left:10px; }
+.logo-link{ text-decoration:none; color:inherit; }
+
+/* ===== CONTENT ===== */
+.container {
+  padding: 140px 8% 80px;
+  min-height: 100vh;
+}
+
+.section-title {
+  font-size: 36px;
+  color: white;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 50px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* ===== FORM BOX ===== */
+.form-box {
+  background: white;
+  border-radius: 30px;
+  padding: 50px 8%;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #7b2ff7;
+}
+
+.form-group label span {
+  background: #ff4ecd;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* 入力要素のスタイル */
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: 0.3s;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #7b2ff7;
+  background: #fdfbff;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+/* 送信ボタン */
+.submit-btn {
+  background: linear-gradient(90deg, #7b2ff7, #ff4ecd);
+  color: white;
+  border: none;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+  box-shadow: 0 10px 20px rgba(123, 47, 247, 0.3);
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(123, 47, 247, 0.4);
+  opacity: 0.9;
+}
+
+/* ===== BACK LINK ===== */
+.back-home {
+  display: block;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.back-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 2px solid white;
+  padding-bottom: 5px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:40px;
+  text-align:center;
+  font-size:12px;
+  background:#f5f5f5;
+  color: #999;
+}
+
+@media screen and (max-width: 600px) {
+  .form-box { padding: 40px 5%; }
+  .section-title { font-size: 28px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-area">
+    <a href="../index.html" class="logo-link">
+      <img src="../logo.png" alt="RED Ocean Project ロゴ">
+      <div class="logo-text">RED Ocean Project</div>
+    </a>
+  </div>
+</header>
+
+<div class="container">
+  <h1 class="section-title">CONTACT</h1>
+
+  <div class="form-box">
+    <form class="contact-form">
+      
+      <div class="form-group">
+        <label>お問い合わせ項目<span>必須</span></label>
+        <select required>
+          <option value="">選択してください</option>
+          <option value="取材・お仕事のご依頼">取材・お仕事のご依頼</option>
+          <option value="タレントへのメッセージ">タレントへのメッセージ</option>
+          <option value="二次創作・ライセンスについて">二次創作・ライセンスについて</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>お名前<span>必須</span></label>
+        <input type="text" placeholder="例：赤海 太郎" required>
+      </div>
+
+      <div class="form-group">
+        <label>メールアドレス<span>必須</span></label>
+        <input type="email" placeholder="example@red-ocean.jp" required>
+      </div>
+
+      <div class="form-group">
+        <label>お問い合わせ内容<span>必須</span></label>
+        <textarea placeholder="詳細をご記入ください" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">送信内容を確認する</button>
+
+    </form>
+  </div>
+
+  <div class="back-home">
+    <a href="../index.html" class="back-link">TOPページへ戻る</a>
+  </div>
+</div>
+
+<footer>
+  © 2023 RED Ocean Project
+</footer>
+
+</body>
+</html>
