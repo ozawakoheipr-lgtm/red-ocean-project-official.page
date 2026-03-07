@@ -207,7 +207,82 @@
 
         /* 投稿スタイル */
         .post-card { background: var(--sidebar-hover); padding:20px; border-radius:12px; border:1px solid var(--border-color); margin-bottom: 15px;}
-    </style>
+ 
+/* --- レスポンシブ対応の追加 --- */
+
+@media (max-width: 768px) {
+    /* 1. サイドバーを完全に隠す */
+    .sidebar {
+        display: none;
+    }
+
+    /* 2. メインコンテンツを画面いっぱいに広げる */
+    .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* 3. ヘッダーの調整（検索バーを少し小さく、左右の余白を調整） */
+    .header-center {
+        flex: 3;
+    }
+    .search-bar {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    /* 4. チャンネルヘッダー（アイコンと名前）を縦並びに調整 */
+    .channel-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 0 10px;
+    }
+    .main-icon {
+        width: 80px;
+        height: 80px;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .info h1 {
+        font-size: 20px;
+    }
+    .btn-group {
+        justify-content: center;
+    }
+
+    /* 5. ビデオグリッドをスマホ用に2列にする（お好みで1frにすれば1列になります） */
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    /* 6. バナーの角丸などを微調整 */
+    .banner-container {
+        padding: 0 8px;
+    }
+    .banner-img {
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    /* 7. タブの文字を少し小さくしてスクロールしやすく */
+    .tab {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/* さらに小さい画面（iPhone SEなど）への対応 */
+@media (max-width: 480px) {
+    .video-grid {
+        grid-template-columns: 1fr; /* 1列にして見やすくする */
+    }
+    .header-right {
+        gap: 8px;
+    }
+}
+   </style>
 </head>
 <body>
 
