@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horizon Live Production - YouTube Style</title>
+    <title>Horizon Live Production - Catherine Rood</title>
     <style>
         /* 変数の設定（ダークモード対応） */
         :root {
@@ -48,7 +48,6 @@
             background: var(--bg-color); 
         }
         
-        /* スクロールバーのカスタマイズ */
         .sidebar::-webkit-scrollbar { width: 8px; }
         .sidebar::-webkit-scrollbar-thumb { background: transparent; border-radius: 10px; }
         .sidebar:hover::-webkit-scrollbar-thumb { background: #aaa; }
@@ -57,16 +56,13 @@
             padding: 20px 12px 10px 12px;
             display: flex;
             justify-content: center;
-            align-items: center;
         }
 
         .sidebar-banner-img {
             display: block;
             width: 80%;
             max-height: 80px;
-            border-radius: 4px;
             object-fit: contain;
-            background-color: transparent; 
         }
 
         .sidebar-menu { padding: 12px; }
@@ -91,7 +87,7 @@
             border-bottom: 1px solid var(--border-color); 
             backdrop-filter: blur(10px);
         }
-        .header-left { display: flex; align-items: center; gap: 15px; flex: 1; }
+        .header-left { flex: 1; }
         .header-center { flex: 2; display: flex; justify-content: center; }
         .search-bar { 
             width: 80%; 
@@ -105,10 +101,8 @@
             color: var(--text-color);
         }
         .header-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 15px; }
-        
         .user-icon-small { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); cursor: pointer; }
 
-        /* テーマ切り替えボタン */
         .theme-toggle {
             background: none;
             border: none;
@@ -145,7 +139,6 @@
         .btn { padding: 10px 20px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; }
         .btn-black { background: var(--text-color); color: var(--bg-color); }
         .btn-gray { background: var(--sidebar-hover); color: var(--text-color); }
-        .btn:hover { opacity: 0.9; transform: scale(1.02); }
 
         /* タブ */
         .nav-tabs { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; border-bottom: 1px solid var(--border-color); overflow-x: auto; }
@@ -157,149 +150,65 @@
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* セクション */
         .section { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         .section-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
 
-        /* ビデオグリッド（レスポンシブ対応） */
+        /* ビデオグリッド */
         .video-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             gap: 16px; 
         }
-        .video-card { cursor: pointer; transition: 0.2s; }
+        .video-card { cursor: pointer; }
         .thumb-container { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; }
         .thumb-img { 
             width: 100%; height: 100%; object-fit: cover; 
             background-color: var(--sidebar-hover);
-            transition: transform 0.3s, border-radius 0.3s;
+            transition: transform 0.3s;
         }
-        .video-card:hover .thumb-img { transform: scale(1.05); border-radius: 0px; }
+        .video-card:hover .thumb-img { transform: scale(1.05); }
         .timestamp { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); color: white; padding: 2px 4px; border-radius: 4px; font-size: 11px; }
         .video-meta { font-size: 14px; margin-top: 8px; font-weight: bold; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .video-details { font-size: 12px; color: var(--secondary-text); margin-top: 4px; }
 
-        /* ショート動画用グリッド */
+        /* ショート動画 */
         .shorts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-        .shorts-card { cursor: pointer; }
         .shorts-thumb { width: 100%; aspect-ratio: 9/16; border-radius: 12px; object-fit: cover; background-color: var(--sidebar-hover); transition: 0.3s; }
-        .shorts-card:hover .shorts-thumb { transform: translateY(-5px); }
 
         /* メンバー */
-        .member-row { 
-            display: flex; 
-            justify-content: flex-start; 
-            gap: 40px;                   
-            padding: 20px 0;
-            overflow-x: auto; 
-        }
-        .member-link { text-decoration: none; color: inherit; display: block; }
-        .member-card { text-align: center; width: 100px; flex-shrink: 0; cursor: pointer; }
-        .member-img { 
-            width: 90px; height: 90px; border-radius: 50%; 
-            object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 8px;
-            background-color: var(--sidebar-hover);
-            transition: transform 0.2s;
-        }
+        .member-row { display: flex; gap: 40px; padding: 20px 0; overflow-x: auto; }
+        .member-link { text-decoration: none; color: inherit; }
+        .member-card { text-align: center; width: 100px; flex-shrink: 0; }
+        .member-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 8px; transition: 0.2s; }
         .member-img:hover { transform: scale(1.1); }
         .member-name { font-size: 13px; font-weight: bold; }
-        .member-subs { font-size: 11px; color: var(--secondary-text); margin-top: 2px; }
+        .member-subs { font-size: 11px; color: var(--secondary-text); }
 
-        /* 投稿スタイル */
         .post-card { background: var(--sidebar-hover); padding:20px; border-radius:12px; border:1px solid var(--border-color); margin-bottom: 15px;}
 
-/* --- レスポンシブ対応の追加 --- */
-
-@media (max-width: 768px) {
-    /* 1. サイドバーを完全に隠す */
-    .sidebar {
-        display: none;
-    }
-
-    /* 2. メインコンテンツを画面いっぱいに広げる */
-    .main-wrapper {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    /* 3. ヘッダーの調整（検索バーを少し小さく、左右の余白を調整） */
-    .header-center {
-        flex: 3;
-    }
-    .search-bar {
-        width: 100%;
-        font-size: 12px;
-    }
-
-    /* 4. チャンネルヘッダー（アイコンと名前）を縦並びに調整 */
-    .channel-header {
-        flex-direction: column;
-        text-align: center;
-        padding: 0 10px;
-    }
-    .main-icon {
-        width: 80px;
-        height: 80px;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-    .info h1 {
-        font-size: 20px;
-    }
-    .btn-group {
-        justify-content: center;
-    }
-
-    /* 5. ビデオグリッドをスマホ用に2列にする（お好みで1frにすれば1列になります） */
-    .video-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 10px;
-        padding: 0 10px;
-    }
-
-    /* 6. バナーの角丸などを微調整 */
-    .banner-container {
-        padding: 0 8px;
-    }
-    .banner-img {
-        border-radius: 8px;
-        margin-top: 10px;
-    }
-
-    /* 7. タブの文字を少し小さくしてスクロールしやすく */
-    .tab {
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-}
-
-/* さらに小さい画面（iPhone SEなど）への対応 */
-@media (max-width: 480px) {
-    .video-grid {
-        grid-template-columns: 1fr; /* 1列にして見やすくする */
-    }
-    .header-right {
-        gap: 8px;
-    }
-}
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-wrapper { margin-left: 0; width: 100%; }
+            .channel-header { flex-direction: column; text-align: center; }
+            .main-icon { margin-right: 0; margin-bottom: 10px; width: 80px; height: 80px; }
+            .video-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
         <div class="sidebar-banner-area">
-            <img src="../yt_logo.png" alt="サイドバーバナー" class="sidebar-banner-img">
+            <img src="../../y_logo.png" alt="Logo" class="sidebar-banner-img">
         </div>
-
         <div class="sidebar-menu">
             <div class="sidebar-item active" onclick="switchTabBySidebar(this, 'home')">🏠 ホーム</div>
             <div class="sidebar-item" onclick="switchTabBySidebar(this, 'shorts')">🩳 ショート</div>
-            <div class="sidebar-item" onclick="switchTabBySidebar(this, 'live')">🔔 登録チャンネル</div>
+            <div class="sidebar-item">🔔 登録チャンネル</div>
             <hr>
             <div class="sidebar-item">👤 マイページ</div>
             <div class="sidebar-item">🕒 履歴</div>
-            <div class="sidebar-item">🎬 作成した動画</div>
-            <div class="sidebar-item">👍 高く評価した動画</div>
         </div>
     </div>
 
@@ -310,20 +219,20 @@
                 <input type="text" id="mainSearch" class="search-bar" placeholder="検索" onkeypress="handleSearch(event)">
             </div>
             <div class="header-right">
-                <button class="theme-toggle" onclick="toggleTheme()" title="テーマ切り替え">🌓</button>
-                ＋ 🔔 <img src="yuhigaoka.png" alt="user" class="user-icon-small">
+                <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+                <img src="yuhigaoka.png" alt="user" class="user-icon-small">
             </div>
         </div>
 
         <div class="banner-container">
-            <img src="orca_topview.jpg" alt="集合バナー" class="banner-img">
+            <img src="orca_topview.jpg" alt="Banner" class="banner-img">
         </div>
 
         <div class="channel-header">
             <img src="../orca.png" alt="社地オルカ" class="main-icon">
             <div class="info">
                 <h1>社地オルカ</h1>
-                <p>@Funeko_Yuhigaoka ・ チャンネル登録者数 45.0万人 ・ 210本の動画</p>
+                <p>@Orca_Shachi ・ チャンネル登録者数 45.0万人 ・ 220本の動画</p>
                 <div class="btn-group">
                     <button class="btn btn-black">チャンネル登録</button>
                     <button class="btn btn-gray">メンバーになる</button>
@@ -332,12 +241,12 @@
         </div>
 
         <div class="nav-tabs">
-            <div class="tab active" onclick="switchTab(event, 'home')">ホーム</div>
-            <div class="tab" onclick="switchTab(event, 'videos')">動画</div>
-            <div class="tab" onclick="switchTab(event, 'shorts')">ショート</div>
-            <div class="tab" onclick="switchTab(event, 'live')">ライブ</div>
-            <div class="tab" onclick="switchTab(event, 'playlist')">再生リスト</div>
-            <div class="tab" onclick="switchTab(event, 'community')">投稿</div>
+            <div class="tab active" data-tab-id="home" onclick="switchTab(event, 'home')">ホーム</div>
+            <div class="tab" data-tab-id="videos" onclick="switchTab(event, 'videos')">動画</div>
+            <div class="tab" data-tab-id="shorts" onclick="switchTab(event, 'shorts')">ショート</div>
+            <div class="tab" data-tab-id="live" onclick="switchTab(event, 'live')">ライブ</div>
+            <div class="tab" data-tab-id="playlist" onclick="switchTab(event, 'playlist')">再生リスト</div>
+            <div class="tab" data-tab-id="community" onclick="switchTab(event, 'community')">投稿</div>
         </div>
 
         <div id="home" class="tab-content active">
@@ -350,7 +259,7 @@
                             <span class="timestamp">1:30:30</span>
                         </div>
                         <div class="video-meta">【歌枠】波音を聴きながら歌う懐メロ【社地オルカ】</div>
-                        <div class="video-details">3.5万回視聴 ・ 3時間前</div>
+                        <div class="video-details">3.5万回視聴 ・ 4時間前</div>
                     </div>
                     <div class="video-card">
                         <div class="thumb-container">
@@ -363,10 +272,10 @@
                     <div class="video-card">
                         <div class="thumb-container">
                             <img src="orca_samune1.jpg" alt="thumbnail" class="thumb-img">
-                            <span class="timestamp">3:20:00</span>
+                            <span class="timestamp">2:20:00</span>
                         </div>
-                        <div class="video-meta">【歌枠】たまには洋楽でも歌っちゃおうかな？【社地オルカ】</div>
-                        <div class="video-details">9.5万回視聴 ・ 2日前</div>
+                        <div class="video-meta">【歌枠】たまには洋楽に挑戦しちゃおうかな？</div>
+                        <div class="video-details">5.5万回視聴 ・ 2日前</div>
                     </div>
                     <div class="video-card">
                         <div class="thumb-container">
@@ -379,14 +288,14 @@
                     <div class="video-card">
                         <div class="thumb-container">
                             <img src="orca_samune4.jpg" alt="thumbnail" class="thumb-img">
-                            <span class="timestamp">3:10:22</span>
+                            <span class="timestamp">2:30:22</span>
                         </div>
                         <div class="video-meta">【雑談枠】みんなでだらだらマシマロ配信</div>
-                        <div class="video-details">6.4万回視聴 ・ 1週間前</div>
+                        <div class="video-details">2.7万回視聴 ・ 1週間前</div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="section">
                 <div class="section-title">注目のチャンネル</div>
                 <div class="member-row">
@@ -426,7 +335,7 @@
                         <div class="member-card">
                             <img src="../yuhigaoka.png" alt="夕陽ヶ丘艦子" class="member-img">
                             <div class="member-name">夕陽ヶ丘艦子</div>
-                            <div class="member-subs">13.0万人</div>
+                            <div class="member-subs">11.2万人</div>
                         </div>
                     </a>
                 </div>
@@ -438,19 +347,24 @@
                 <div class="section-title">アップロード動画</div>
                 <div class="video-grid">
                     <div class="video-card">
-                        <div class="thumb-container"><img src="fish_thumb1.jpg" class="thumb-img"></div>
-                        <div class="video-meta">今日の朝練敬礼！</div>
-                        <div class="video-details">1.2万回視聴 ・ 1日前</div>
+                        <div class="thumb-container"><img src="junjoji_video4.jpg" class="thumb-img"></div>
+                        <div class="video-meta">【実写動画】伊豆の洞窟探検隊！</div>
+                        <div class="video-details">10万回視聴 ・ 3週間前</div>
                     </div>
                     <div class="video-card">
-                        <div class="thumb-container"><img src="fish_thumb2.jpg" class="thumb-img"></div>
-                        <div class="video-meta">激辛海軍カレー食べてみた</div>
-                        <div class="video-details">.5万回視聴 ・ 3日前</div>
+                        <div class="thumb-container"><img src="junjoji_video2.jpg" class="thumb-img"></div>
+                        <div class="video-meta">【実写動画】圧巻！！雲見でトルネード！！！！</div>
+                        <div class="video-details">55万回視聴 ・ 3週間前</div>
                     </div>
                     <div class="video-card">
-                        <div class="thumb-container"><img src="fish_thumb5.jpg" class="thumb-img"></div>
-                        <div class="video-meta">10秒でわかる主砲の掃除方法</div>
-                        <div class="video-details">28万回視聴 ・ 2週間前</div>
+                        <div class="thumb-container"><img src="junjoji_video3.jpg" class="thumb-img"></div>
+                        <div class="video-meta">【実写動画】西伊豆の洞窟探検隊！</div>
+                        <div class="video-details">3.1万回視聴 ・ 3週間前</div>
+                    </div>
+                    <div class="video-card">
+                        <div class="thumb-container"><img src="junjoji_video1.png" class="thumb-img"></div>
+                        <div class="video-meta">【実写動画】石垣島ボートダイブ</div>
+                        <div class="video-details">23万回視聴 ・ 4週間前</div>
                     </div>
                 </div>
             </div>
@@ -461,19 +375,19 @@
                 <div class="section-title">Shorts</div>
                 <div class="shorts-grid">
                     <div class="shorts-card">
-                        <img src="egi_shorts3.png" class="shorts-thumb">
-                        <div class="video-meta">今日の朝練敬礼！</div>
-                        <div class="video-details">2.2万回視聴</div>
+                        <img src="junjoji_shorts1.png" class="shorts-thumb">
+                        <div class="video-meta">ハナクマノミちゃんはかわゆいなあ</div>
+                        <div class="video-details">3.2万回視聴</div>
                     </div>
                     <div class="shorts-card">
-                        <img src="egi_shorts1.png" class="shorts-thumb">
-                        <div class="video-meta">激辛海軍カレー食べてみた</div>
-                        <div class="video-details">1.5万回視聴</div>
+                        <img src="junjoji_shorts2.png" class="shorts-thumb">
+                        <div class="video-meta">ニモちゃん見っけ！！！！</div>
+                        <div class="video-details">54万回視聴</div>
                     </div>
                     <div class="shorts-card">
-                        <img src="egi_shorts2.png" class="shorts-thumb">
-                        <div class="video-meta">10秒でわかる主砲の掃除方法</div>
-                        <div class="video-details">28万回視聴</div>
+                        <img src="junjoji_shorts3.png" class="shorts-thumb">
+                        <div class="video-meta">石垣島でマンタに遭遇！！！！！！</div>
+                        <div class="video-details">43万回視聴</div>
                     </div>
                 </div>
             </div>
@@ -482,14 +396,14 @@
         <div id="live" class="tab-content">
             <div class="section">
                 <div class="section-title">過去のライブ配信</div>
-               <div class="video-grid">
+                <div class="video-grid">
                     <div class="video-card">
                         <div class="thumb-container">
                             <img src="orca_samune1.jpg" alt="thumbnail" class="thumb-img">
                             <span class="timestamp">1:30:30</span>
                         </div>
-                        <div class="video-meta">【歌枠】波音を聴きながら歌う懐メロ【社地オルカ】</div>
-                        <div class="video-details">3.5万回視聴 ・ 3時間前</div>
+                        <div class="video-meta">【歌枠】波音を聴きながら歌う懐メロ【社地オルカ】／</div>
+                        <div class="video-details">3.5万回視聴 ・ 4時間前</div>
                     </div>
                     <div class="video-card">
                         <div class="thumb-container">
@@ -502,10 +416,10 @@
                     <div class="video-card">
                         <div class="thumb-container">
                             <img src="orca_samune1.jpg" alt="thumbnail" class="thumb-img">
-                            <span class="timestamp">3:20:00</span>
+                            <span class="timestamp">2:20:00</span>
                         </div>
-                        <div class="video-meta">【歌枠】たまには洋楽でも歌っちゃおうかな？【社地オルカ】</div>
-                        <div class="video-details">9.5万回視聴 ・ 2日前</div>
+                        <div class="video-meta">【歌枠】たまには洋楽に挑戦しちゃおうかな？【社地オルカ】</div>
+                        <div class="video-details">5.5万回視聴 ・ 2日前</div>
                     </div>
                     <div class="video-card">
                         <div class="thumb-container">
@@ -518,10 +432,10 @@
                     <div class="video-card">
                         <div class="thumb-container">
                             <img src="orca_samune4.jpg" alt="thumbnail" class="thumb-img">
-                            <span class="timestamp">3:10:22</span>
+                            <span class="timestamp">2:30:22</span>
                         </div>
                         <div class="video-meta">【雑談枠】みんなでだらだらマシマロ配信</div>
-                        <div class="video-details">6.4万回視聴 ・ 1週間前</div>
+                        <div class="video-details">2.7万回視聴 ・ 1週間前</div>
                     </div>
                 </div>
             </div>
@@ -533,121 +447,72 @@
                 <div class="video-grid">
                     <div class="video-card">
                         <div class="thumb-container">
-                            <img src="playlist_1.jpg" class="thumb-img" style="border-right: 20px solid rgba(0,0,0,0.5);">
+                            <img src="junjoji_video4.jpg" class="thumb-img" style="border-right: 20px solid rgba(0,0,0,0.5);"><span class="timestamp">35本</span>
                         </div>
-                        <div class="video-meta">エギング攻略シリーズ(全15本)</div>
+                        <div class="video-meta">【実写動画】洞窟探検</div>
                     </div>
                     <div class="video-card">
                         <div class="thumb-container">
-                            <img src="playlist_2.jpg" class="thumb-img" style="border-right: 20px solid rgba(0,0,0,0.5);">
+                            <img src="junjoji_video5.jpg" class="thumb-img" style="border-right: 20px solid rgba(0,0,0,0.5);"><span class="timestamp">50本</span>
                         </div>
-                        <div class="video-meta">あかりの釣り遠征記(全20本)</div>
+                        <div class="video-meta">【実写動画】いろんないきもの</div>
                     </div>
                 </div>
             </div>
-        </div>
+　      </div>
 
         <div id="community" class="tab-content">
             <div class="section">
                 <div class="section-title">コミュニティ投稿</div>
                 <div class="post-card">
-                    <p><strong>社地オルカ</strong> <span style="font-size:12px; color:var(--secondary-text);">7時間前</span></p>
+                    <p><strong>社地オルカ</strong> <span style="font-size:12px; color:var(--secondary-text);">4時間前</span></p>
                     <p>21:00からは「歌枠」だよ！⚓絶対に見に来てね！セットリストの予想、待ってるよ〜！✨</p>
                 </div>
                 <div class="post-card">
-                    <p><strong>社地オルカ</strong> <span style="font-size:12px; color:var(--secondary-text);">1日前</span></p>
-                    <p>昨日の深海調査配信、みんなありがとう！あの沈没船、一体何だったんだろうな…また調査しに行くぞ！</p>
+                    <p><strong>社地オルカ</strong> <span style="font-size:12px; color:var(--secondary-text);">2日前</span></p>
+                    <p>洋楽やっぱ難しい～～～！もっともっと練習しないと…⚓</p>
+                </div>
                 </div>
             </div>
         </div>
-
-    </div>
+　  </div>
 
     <script>
-        // タブ切り替え（メインのタブ用）
-        function switchTab(event, tabId) {
-            updateTabUI(tabId);
-            
-            // ナビゲーションタブのactiveクラス更新
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            if(event) event.currentTarget.classList.add('active');
-
-            // 検索のリセット（新しいタブに移動した際、隠れているカードを戻す）
-            resetSearch();
-        }
-
-        // サイドバー項目クリック時のタブ切り替え用
-        function switchTabBySidebar(element, tabId) {
-            // サイドバーのactiveクラス更新
-            const sidebarItems = document.querySelectorAll('.sidebar-item');
-            sidebarItems.forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
-
-            // メインタブのUIも連動させる
-            const mainTabs = document.querySelectorAll('.tab');
-            mainTabs.forEach(tab => {
-                tab.classList.remove('active');
-                if(tab.innerText.includes(element.innerText.replace(/[^\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FFa-zA-Z]/g, '').trim())) {
-                     tab.classList.add('active');
-                }
-            });
-
-            updateTabUI(tabId);
-            resetSearch();
-        }
-
-        // 共通のタブ表示ロジック
-        function updateTabUI(tabId) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-
-            const target = document.getElementById(tabId);
-            if(target) {
-                target.classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        // 検索機能の処理（YouTube風：Enterキーで実行）
         function handleSearch(event) {
             if (event.key === 'Enter') {
-                const query = event.target.value.toLowerCase().trim();
-                
-                // 表示中のタブ内にある動画カードを取得
-                const activeContent = document.querySelector('.tab-content.active');
-                const cards = activeContent.querySelectorAll('.video-card, .shorts-card, .post-card');
-
-                cards.forEach(card => {
-                    const title = card.innerText.toLowerCase();
-                    if (title.includes(query)) {
-                        card.style.display = ""; // 表示
-                    } else {
-                        card.style.display = "none"; // 非表示
-                    }
-                });
+                const keyword = event.target.value.trim();
+                if (keyword) {
+                    window.location.href = `../youtube_search.html?q=${encodeURIComponent(keyword)}`;
+                }
             }
         }
 
-        // 検索リセット
-        function resetSearch() {
-            const searchBar = document.getElementById('mainSearch');
-            searchBar.value = "";
-            const allCards = document.querySelectorAll('.video-card, .shorts-card, .post-card');
-            allCards.forEach(card => card.style.display = "");
+        function switchTab(event, tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (event) {
+                event.currentTarget.classList.add('active');
+            } else {
+                const targetTab = document.querySelector(`.tab[data-tab-id="${tabId}"]`);
+                if (targetTab) targetTab.classList.add('active');
+            }
         }
 
-        // テーマ切り替え（ライト/ダーク）
+        function switchTabBySidebar(element, tabId) {
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            switchTab(null, tabId);
+        }
+
         function toggleTheme() {
             const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
+            if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
             } else {
                 body.setAttribute('data-theme', 'dark');
             }
         }
     </script>
-
 </body>
 </html>

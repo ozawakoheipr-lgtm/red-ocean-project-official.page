@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>検索結果 - Horizon Live Production</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #0f0f0f;
+            --secondary-text: #606060;
+            --border-color: #eee;
+            --hover-color: #f2f2f2;
+            --yt-red: #ff0000;
+        }
+        [data-theme="dark"] {
+            --bg-color: #0f0f0f;
+            --text-color: #ffffff;
+            --secondary-text: #aaaaaa;
+            --border-color: #333333;
+            --hover-color: #262626;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Roboto", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            height: 56px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* フィルタリングタブ */
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .filter-tab {
+            padding: 6px 12px;
+            background-color: var(--hover-color);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            border: none;
+            color: var(--text-color);
+        }
+
+        .filter-tab.active {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        .search-info {
+            font-size: 14px;
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+        }
+
+        /* 検索結果のスタイル */
+        .result-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .thumb-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .result-thumb {
+            width: 360px;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            object-fit: cover;
+            background-color: var(--hover-color);
+        }
+
+        /* Shorts用スタイル（縦長） */
+        .type-shorts .result-thumb {
+            width: 200px;
+            aspect-ratio: 9 / 16;
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 4px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* バッジスタイル */
+        .badge {
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .badge-live { background-color: var(--yt-red); color: white; }
+        .badge-shorts { background-color: #ff8c00; color: white; }
+        .badge-playlist { background-color: rgba(0,0,0,0.8); color: white; }
+
+        .result-meta {
+            font-size: 12px;
+            color: var(--secondary-text);
+            margin-bottom: 12px;
+        }
+
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .channel-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .result-item { flex-direction: column; }
+            .result-thumb { width: 100% !important; }
+            .type-shorts .result-thumb { aspect-ratio: 16 / 9; object-fit: cover; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="cursor:pointer; font-size: 20px;" onclick="history.back()">←</div>
+    <div style="flex:1; text-align:center;">
+        <strong id="searchQueryTitle"></strong>
+    </div>
+</div>
+
+<div class="search-container">
+    <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterResults('all')">すべて</button>
+        <button class="filter-tab" onclick="filterResults('video')">動画</button>
+        <button class="filter-tab" onclick="filterResults('shorts')">Shorts</button>
+        <button class="filter-tab" onclick="filterResults('live')">ライブ</button>
+        <button class="filter-tab" onclick="filterResults('playlist')">再生リスト</button>
+    </div>
+
+    <div id="searchInfo" class="search-info"></div>
+    <div id="resultsList"></div>
+</div>
+
+<script>
+    // --- 拡張版データベース ---
+    // type: video, shorts, live, playlist
+    const videoDatabase = [
+        { title: "【英会話】Cathy先生の全力♡英会話教室", type: "live", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_samune2.jpg", url: "youtube_catherine/catherine_channel.html", views: "3.0万回", date: "3時間前" },
+        { title: "【実況】新スキン登場！Cathyのダイナマイトボディ♡【Oh！Peach Queen】", type: "live", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_samune1.jpg", url: "youtube_catherine/catherine_channel.html", views: "1.5万回", date: "昨日" },
+        { title: "【実況】カリビアン・クイーンの技を魅せてあげる♡【Oh！Peach Queen】", type: "live", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_samune1.jpg", url: "youtube_catherine/catherine_channel.html", views: "1.8万回", date: "2日前" },
+        { title: "【実況】見て♡Cathyのスーパーテク♡【Oh！Peach Queen】", type: "live", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_samune1.jpg", url: "youtube_catherine/catherine_channel.html", views: "2.3万回", date: "3日前" },
+        { title: "【英会話】Cathy先生の全力♡英会話教室", type: "live", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_samune2.jpg", url: "youtube_catherine/catherine_channel.html", views: "3.2万回", date: "1週間前" },
+        { title: "【Lesson！】飛行機でChicken or Beef？どう頼む？", type: "shorts", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_shorts1.jpg", url: "youtube_catherine/catherine_channel.html", views: "3.2万回" },
+        { title: "【Lesson！】Shoppingで領収書が欲しい時", type: "shorts", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_shorts1.jpg", url: "youtube_catherine/catherine_channel.html", views: "3.5万回" },
+        { title: "【Lesson！】面接での自己紹介どう始める？", type: "shorts", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_shorts1.jpg", url: "youtube_catherine/catherine_channel.html", views: "5.5万回" },
+        { title: "【Lesson！】L.AでCoffeeは通じない！？どう頼む？", type: "shorts", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_shorts1.jpg", url: "youtube_catherine/catherine_channel.html", views: "4.5万回" },
+        { title: "【Lesson！】コンビニで「お箸はいりません」何て言う？", type: "shorts", channel: "Catherine Rood", channelIcon: "catherine.png", thumb: "youtube_catherine/catherine_shorts1.jpg", url: "youtube_catherine/catherine_channel.html", views: "3.5万回" },
+        { title: "【雑談しよう】久しぶりのおしゃべり枠！エモンズ行きたい", type: "live", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_samune5.jpg", url: "youtube_junjoji/junjoji_channel.html", views: "3.5万回", date: "3時間前" },
+        { title: "【ゲーム実況】The Diver／ニモちゃんを探すまで帰りません！！", type: "live", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_samune2.jpg", url: "youtube_junjoji/junjoji_channel.html", views: "2.1万回", date: "昨日" },
+        { title: "【ゲーム実況】The Diver／昨日調査で見つけた沈没船を探索だ～！", type: "live", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_samune3.jpg", url: "youtube_junjoji/junjoji_channel.html", views: "4.2万回", date: "2日前" },
+        { title: "【ゲーム実況】The Diver／新ステージ解禁！さっそく探検！！", type: "live", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_samune4.jpg", url: "youtube_junjoji/junjoji_channel.html", views: "5.0万回", date: "3日前" },
+        { title: "【ただいま～！】伊豆ダイビング旅の結果発表会！お話しよ！", type: "live", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_samune1.png", url: "youtube_junjoji/junjoji_channel.html", views: "2.4万回", date: "1週間前" },
+        { title: "ハナクマノミちゃんはかわゆいなあ？", type: "shorts", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_shorts1.png", url: "youtube_junjoji/junjoji_channel.html", views: "3.2万回" },
+        { title: "ニモちゃん見っけ！！！！", type: "shorts", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_shorts2.png", url: "youtube_junjoji/junjoji_channel.html", views: "54万回" },
+        { title: "石垣島でマンタに遭遇！！！！！！", type: "shorts", channel: "純情寺あま", channelIcon: "junjoji.png", thumb: "youtube_junjoji/junjoji_shorts3.png", url: "youtube_junjoji/junjoji_channel.html", views: "43万回" },
+        { title: "【雑談】エギンガー集まれ！！！！", type: "video", channel: "餌木あかり", channelIcon: "egi.png", thumb: "youtube_egi/egi_samune1.jpg", url: "youtube_egi/egi_channel.html", views: "万回", date: "1ヶ月前" },
+        { title: "【爆釣】朝マズメの堤防でルアーを投げたら入れ食い！", type: "video", channel: "餌木あかり", channelIcon: "egi.png", thumb: "fish_thumb1.jpg", url: "youtube_egi/egi_channel.html", views: "8,000回", date: "3時間前" },
+
+
+
+
+
+
+
+
+
+
+        { title: "作業用BGM再生リスト", type: "playlist", channel: "社地オルカ", channelIcon: "orca.png", thumb: "orca_list.jpg", url: "youtube_orca/orca_channel.html", views: "200本", date: "更新済み" },
+        { title: "【解説】戦艦の歴史を30分で完全理解", type: "live", channel: "夕陽ヶ丘 艦子", channelIcon: "yuhigaoka.png", thumb: "kan-ko_history.jpg", url: "youtube_yuhigaoka/yuhigaoka_channel.html", views: "8.9万回", date: "1週間前" }
+    ];
+
+    let currentQuery = "";
+    let currentFilter = "all";
+
+    function performSearch() {
+        const params = new URLSearchParams(window.location.search);
+        currentQuery = params.get('q') ? params.get('q').toLowerCase() : "";
+        document.getElementById('searchQueryTitle').innerText = currentQuery;
+        renderResults();
+    }
+
+    function filterResults(type) {
+        currentFilter = type;
+        // タブの活性状態を更新
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.classList.remove('active');
+            if(tab.innerText.toLowerCase().includes(type) || (type === 'all' && tab.innerText === 'すべて')) {
+                tab.classList.add('active');
+            }
+        });
+        renderResults();
+    }
+
+    function renderResults() {
+        const resultsList = document.getElementById('resultsList');
+        const searchInfo = document.getElementById('searchInfo');
+        
+        // 1. キーワードで絞り込み
+        let filtered = videoDatabase.filter(v => 
+            v.title.toLowerCase().includes(currentQuery) || 
+            v.channel.toLowerCase().includes(currentQuery)
+        );
+
+        // 2. タイプで絞り込み
+        if (currentFilter !== 'all') {
+            filtered = filtered.filter(v => v.type === currentFilter);
+        }
+
+        searchInfo.innerText = `約 ${filtered.length} 件のヒット`;
+
+        if (filtered.length === 0) {
+            resultsList.innerHTML = "<p>一致する結果は見つかりませんでした。</p>";
+            return;
+        }
+
+        resultsList.innerHTML = filtered.map(v => {
+            // バッジの判定
+            let badgeHtml = "";
+            if(v.type === 'live') badgeHtml = '<span class="badge badge-live">● ライブ</span>';
+            if(v.type === 'shorts') badgeHtml = '<span class="badge badge-shorts">Shorts</span>';
+            if(v.type === 'playlist') badgeHtml = '<span class="badge badge-playlist">再生リスト</span>';
+
+            return `
+                <a href="${v.url}" class="result-item type-${v.type}">
+                    <div class="thumb-container">
+                        <img src="${v.thumb}" class="result-thumb" alt="thumbnail">
+                    </div>
+                    <div class="result-info">
+                        <h3 class="result-title">${badgeHtml}${v.title}</h3>
+                        <p class="result-meta">${v.views}視聴 • ${v.date}</p>
+                        <div class="channel-info">
+                            <img src="${v.channelIcon}" class="channel-icon">
+                            <span style="font-size:13px; color:var(--secondary-text);">${v.channel}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+    }
+
+    window.onload = performSearch;
+</script>
+
+</body>
+</html>

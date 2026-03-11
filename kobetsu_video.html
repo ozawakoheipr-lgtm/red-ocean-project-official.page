@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>動画再生ページ</title>
+
+<link rel="stylesheet" href="../css/css_all.css">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#ffffff;
+color:#0f0f0f;
+}
+
+/* 全体レイアウト */
+
+.layout{
+display:flex;
+}
+
+/* 左バナー */
+
+.sidebar-banner-area{
+width:120px;
+background:#ffffff;
+display:flex;
+align-items:flex-start;
+justify-content:center;
+padding-top:10px;
+}
+
+.sidebar-banner-img{
+width:90px;
+height:auto;
+}
+
+/* メインエリア */
+
+.main-content{
+flex:1;
+}
+
+/* ヘッダー */
+
+.header{
+height:60px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-bottom:1px solid #eee;
+}
+
+.search-bar{
+width:500px;
+max-width:80%;
+height:36px;
+border-radius:20px;
+border:1px solid #ccc;
+padding:0 15px;
+font-size:14px;
+}
+
+/* レイアウト */
+
+.watch-container{
+display:flex;
+gap:25px;
+padding:20px;
+max-width:1400px;
+margin:auto;
+}
+
+.video-area{
+flex:3;
+}
+
+.video-player{
+width:100%;
+aspect-ratio:16/9;
+background:black;
+border-radius:12px;
+overflow:hidden;
+}
+
+.video-player img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.video-title{
+font-size:20px;
+font-weight:bold;
+margin-top:12px;
+}
+
+/* チャンネル情報 */
+
+.channel-info{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-top:10px;
+padding-bottom:10px;
+border-bottom:1px solid #eee;
+}
+
+.channel-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.channel-icon{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+
+.channel-name{
+font-weight:bold;
+}
+
+.channel-subs{
+font-size:13px;
+color:#606060;
+}
+
+.subscribe-btn{
+background:#0f0f0f;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:20px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.member-btn{
+background:#eee;
+border:none;
+padding:10px 16px;
+border-radius:20px;
+margin-right:10px;
+cursor:pointer;
+}
+
+/* 概要 */
+
+.description{
+background:#f2f2f2;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
+font-size:14px;
+}
+
+/* コメント */
+
+.comment-section{
+margin-top:20px;
+}
+
+.comment{
+display:flex;
+gap:10px;
+margin-top:15px;
+align-items:flex-start;
+}
+
+.comment-icon{
+font-weight:bold;
+font-size:13px;
+color:#0f0f0f;
+min-width:80px;
+}
+
+.comment-text{
+background:#f2f2f2;
+padding:10px;
+border-radius:8px;
+font-size:14px;
+flex:1;
+}
+
+/* 右側おすすめ */
+
+.recommend{
+flex:1.5;
+}
+
+.recommend-item{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+cursor:pointer;
+}
+
+.recommend-thumb{
+width:160px;
+aspect-ratio:16/9;
+border-radius:8px;
+overflow:hidden;
+}
+
+.recommend-thumb img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.recommend-title{
+font-size:14px;
+}
+
+/* スマホ */
+
+@media(max-width:900px){
+
+.sidebar-banner-area{
+display:none;
+}
+
+.watch-container{
+flex-direction:column;
+}
+
+.recommend{
+order:3;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- 左バナー -->
+
+<div class="sidebar-banner-area">
+<img src="../y_logo.png" alt="Logo" class="sidebar-banner-img">
+</div>
+
+<!-- メイン -->
+
+<div class="main-content">
+
+<!-- 検索バー -->
+
+<div class="header">
+
+<input type="text"
+id="mainSearch"
+class="search-bar"
+placeholder="検索"
+onkeypress="handleSearch(event)">
+
+</div>
+
+
+<div class="watch-container">
+
+<!-- 左動画エリア -->
+
+<div class="video-area">
+
+<div class="video-player">
+<img src="thumbnail.jpg">
+</div>
+
+<div class="video-title">
+【Minecraft】新人歓迎会で先輩たちが考えたユニット名
+</div>
+
+<div class="channel-info">
+
+<div class="channel-left">
+
+<img src="ema_icon.png" class="channel-icon">
+
+<div>
+<div class="channel-name">
+藍沢エマ / Aizawa Ema
+</div>
+
+<div class="channel-subs">
+チャンネル登録者数 67.9万人
+</div>
+</div>
+
+</div>
+
+<div>
+<button class="member-btn">メンバーになる</button>
+<button class="subscribe-btn">チャンネル登録</button>
+</div>
+
+</div>
+
+<div class="description">
+
+<p>
+<span style="font-size:12px;color:#606060;">●●回視聴</span>
+<span style="font-size:12px;color:#606060;">　4時間前にライブ配信</span>
+</p>
+
+<p>
+新人歓迎会で先輩が考えたユニット名<br>
+「ふいすぽ！」爆誕！？<br>
+ああああああああああああああああああああ<br>
+ああああああああああああああああああああ
+</p>
+
+</div>
+
+<div class="comment-section">
+
+<h3>コメント</h3>
+
+<div class="comment">
+<div class="comment-icon">高田光太郎</div>
+<div class="comment-text">
+この配信めちゃくちゃ好きｗ
+</div>
+</div>
+
+<div class="comment">
+<div class="comment-icon">muteking</div>
+<div class="comment-text">
+新人歓迎マイクラ最高！
+</div>
+</div>
+
+<div class="comment">
+<div class="comment-icon">マジンガー</div>
+<div class="comment-text">
+ふいすぽの絡みほんと好き
+</div>
+</div>
+
+</div>
+
+</div> <!-- video-area終了 -->
+
+
+<!-- 右側おすすめ -->
+
+<div class="recommend">
+
+<div class="recommend-item">
+<div class="recommend-thumb">
+<img src="thumb1.jpg">
+</div>
+<div class="recommend-title">
+【Minecraft】KFSサーバー
+</div>
+</div>
+
+<div class="recommend-item">
+<div class="recommend-thumb">
+<img src="thumb2.jpg">
+</div>
+<div class="recommend-title">
+新人歓迎マイクラ
+</div>
+</div>
+
+<div class="recommend-item">
+<div class="recommend-thumb">
+<img src="thumb2.jpg">
+</div>
+<div class="recommend-title">
+新人歓迎マイクラ
+</div>
+</div>
+
+<div class="recommend-item">
+<div class="recommend-thumb">
+<img src="thumb2.jpg">
+</div>
+<div class="recommend-title">
+新人歓迎マイクラ
+</div>
+</div>
+
+<div class="recommend-item">
+<div class="recommend-thumb">
+<img src="thumb2.jpg">
+</div>
+<div class="recommend-title">
+新人歓迎マイクラ
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* 検索 */
+
+function handleSearch(event){
+
+if(event.key === "Enter"){
+
+const keyword = event.target.value.trim();
+
+if(keyword){
+
+window.location.href =
+`youtube_search.html?q=${encodeURIComponent(keyword)}`;
+
+}
+
+}
+
+}
+
+</script>
+
+<div class="disclaimer">
+このWebサイトの内容はフィクションであり、実在の人物・団体とは一切関係がありません。
+</div>
+
+</body>
+</html>

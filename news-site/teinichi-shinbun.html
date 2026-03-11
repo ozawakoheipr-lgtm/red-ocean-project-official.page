@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>帝日新聞</title>
+
+<link rel="stylesheet" href="../css/css_all.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Helvetica Neue",Arial;
+background:#f2f4f7;
+color:#111;
+transition:0.3s;
+}
+
+body.dark{
+background:#121212;
+color:#eee;
+}
+
+/* ===== HEADER ===== */
+
+header{
+background:white;
+border-bottom:1px solid #ddd;
+}
+
+body.dark header{
+background:#1e1e1e;
+}
+
+.header-inner{
+max-width:1200px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+letter-spacing:3px;
+}
+
+.dark-btn{
+cursor:pointer;
+border:none;
+background:#003366;
+color:white;
+padding:8px 14px;
+border-radius:20px;
+}
+
+/* ===== NAV ===== */
+
+nav{
+background:#003366;
+color:white;
+}
+
+.nav-inner{
+max-width:1200px;
+margin:auto;
+display:flex;
+gap:25px;
+padding:10px 15px;
+overflow-x:auto;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-size:14px;
+white-space:nowrap;
+}
+
+/* ===== BREAKING ===== */
+
+.breaking{
+background:#ff3b30;
+color:white;
+padding:8px 0;
+overflow:hidden;
+}
+
+.breaking-text{
+white-space:nowrap;
+display:inline-block;
+padding-left:100%;
+animation:scroll 15s linear infinite;
+}
+
+@keyframes scroll{
+0%{transform:translateX(0);}
+100%{transform:translateX(-100%);}
+}
+
+/* ===== LAYOUT ===== */
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+display:flex;
+gap:25px;
+}
+
+.main{
+flex:3;
+}
+
+.sidebar{
+flex:1.4;
+}
+
+/* ===== TOP NEWS ===== */
+
+.top-news{
+background:white;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:20px;
+}
+
+body.dark .top-news{
+background:#1e1e1e;
+}
+
+.top-news img{
+width:70%;
+}
+
+.top-content{
+padding:15px;
+}
+
+.top-content h2{
+font-size:24px;
+margin-bottom:10px;
+}
+
+.top-content p{
+font-size:14px;
+line-height:1.6;
+}
+
+/* ===== NEWS LIST ===== */
+
+.news-list{
+background:white;
+border-radius:10px;
+padding:15px;
+}
+
+body.dark .news-list{
+background:#1e1e1e;
+}
+
+.news-item{
+display:flex;
+gap:15px;
+padding:15px 0;
+border-bottom:1px solid #eee;
+}
+
+.news-item:last-child{
+border:none;
+}
+
+.news-thumb{
+width:140px;
+aspect-ratio:16/9;
+overflow:hidden;
+border-radius:6px;
+}
+
+.news-thumb img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.news-title{
+font-size:16px;
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.news-desc{
+font-size:13px;
+color:#666;
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar-box{
+background:white;
+border-radius:10px;
+padding:15px;
+margin-bottom:20px;
+}
+
+body.dark .sidebar-box{
+background:#1e1e1e;
+}
+
+.sidebar-box h3{
+margin-bottom:10px;
+border-bottom:2px solid #003366;
+padding-bottom:5px;
+}
+
+/* 人気ランキング */
+
+.rank{
+display:flex;
+gap:10px;
+margin-bottom:10px;
+text-decoration:none;
+color:inherit;
+cursor:pointer;
+}
+
+.rank:hover{
+opacity:0.7;
+}
+
+/* ===== FOOTER ===== */
+
+footer{
+background:#003366;
+color:white;
+text-align:center;
+padding:30px;
+margin-top:40px;
+}
+
+/* ===== MOBILE NAV ===== */
+
+.mobile-nav{
+display:none;
+position:fixed;
+bottom:0;
+width:100%;
+background:white;
+border-top:1px solid #ccc;
+justify-content:space-around;
+padding:10px 0;
+}
+
+.mobile-nav a{
+text-decoration:none;
+color:#333;
+font-size:12px;
+text-align:center;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+.container{
+flex-direction:column;
+}
+
+.mobile-nav{
+display:flex;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+
+<div class="header-inner">
+
+<div class="logo">
+帝日新聞
+</div>
+
+</div>
+
+</header>
+
+<nav>
+
+<div class="nav-inner">
+
+<a href="#">トップ</a>
+<a href="#">政治</a>
+<a href="#">経済</a>
+<a href="#">社会</a>
+<a href="#">国際</a>
+<a href="#">テクノロジー</a>
+<a href="#">スポーツ</a>
+<a href="#">文化</a>
+
+</div>
+
+</nav>
+
+<div class="breaking">
+
+<div class="breaking-text">
+速報：政府、経済政策で方針を固めたか　｜　日経平均株価が後場にかけて急上昇　｜　9日変死の20代女性、人気VTuberと発表
+</div>
+
+</div>
+
+
+<div class="container">
+
+<div class="main">
+
+<div class="top-news">
+
+<img src="top-news.jpg">
+
+<div class="top-content">
+
+<h2>
+政府、新エネルギー政策議論　再エネ導入を加速か
+</h2>
+
+<p>
+政府は10日、新エネルギー政策を議論。
+再生可能エネルギーの導入を拡大する方針を示した。
+</p>
+
+</div>
+
+</div>
+
+
+<div class="news-list">
+
+<div class="news-item">
+
+<div class="news-thumb">
+<img src="news-title1.jpg">
+</div>
+
+<div>
+<div class="news-title">
+日経平均、続伸　半導体株が上昇を牽引か。
+</div>
+
+<div class="news-desc">
+東京株式市場で半導体関連銘柄が上昇。
+</div>
+</div>
+
+</div>
+
+<div class="news-item">
+
+<div class="news-thumb">
+<img src="news-title2.jpg">
+</div>
+
+<div>
+<div class="news-title">
+民間企業による宇宙ロケット打ち上げが実施
+</div>
+
+<div class="news-desc">
+重工大手・波浮重工による宇宙ロケットが実施。
+</div>
+</div>
+
+</div>
+
+
+<div class="news-item">
+
+<div class="news-thumb">
+<img src="news-title3.jpg">
+</div>
+
+<div>
+<div class="news-title">
+全国で春の陽気　桜の開花早まるか
+</div>
+
+<div class="news-desc">
+気象庁は桜の開花が早まる可能性を発表。
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="sidebar">
+
+<div class="sidebar-box">
+
+<h3>人気記事</h3>
+
+<div class="rank"><div class="rank-num">1</div>日本代表が劇的勝利</div>
+
+<a href="teinichi-shinbun_article_2603102132.html" class="rank">
+<div class="rank-num">2</div>
+変死の20代女性、行方不明のVTuberと発表
+</a>
+
+<div class="rank"><div class="rank-num">3</div>円相場急落</div>
+
+<div class="rank"><div class="rank-num">4</div>俳優・今福基千可、麻薬取締法違反か</div>
+
+<div class="rank"><div class="rank-num">5</div>AI市場2030年に3倍</div>
+</div>
+
+<div class="sidebar-box">
+
+<h3>速報</h3>
+
+<p>政府、経済政策で方針を固めたか</p>
+<p>日経平均株価、後場にかけて急上昇</p>
+<p>大日本物産、社長交代を発表</p>
+<p>国内線旅客機で刃物を持った男性が拘束</p>
+<p>原油先物が</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+© 帝日新聞社
+
+</footer>
+
+<div class="mobile-nav">
+
+<a href="#">トップ</a>
+<a href="#">ランキング</a>
+<a href="#">速報</a>
+<a href="#">検索</a>
+
+</div>
+
+
+<script>
+
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
+
+</script>
+
+<div class="disclaimer">
+このWebサイトの内容はフィクションであり、実在の人物・団体とは一切関係がありません。
+</div>
+
+</body>
+</html>
